@@ -2,8 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Alert, ScrollView, Keyboard, StyleSheet, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { registration } from '../API/firebaseMethods';
+import { LogBox } from 'react-native';
+import _ from 'lodash';
 
 export default function SignUp({ navigation }) {
+
+    LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+    LogBox.ignoreAllLogs(); // ignore all logs
+    const _console = _.clone(console);
+    console.warn = message => {
+        if (message.indexOf('Setting a timer') <= -1) {
+            _console.warn(message);
+        }
+    };
+
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');

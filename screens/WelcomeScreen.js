@@ -1,14 +1,26 @@
 import { ImageBackground, StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LogBox } from 'react-native';
+import _ from 'lodash';
 
 export default function WelcomeScreen({ navigation }) {
+    LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+    LogBox.ignoreAllLogs(); // ignore all logs
+    const _console = _.clone(console);
+    console.warn = message => {
+        if (message.indexOf('Setting a timer') <= -1) {
+            _console.warn(message);
+        }
+    };
+
+
     return (
         <ImageBackground
             style={styles.background}
             source={require('../assets/background.jpg')}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Welcome to wasteFind App                     (Firebase/Firestore)</Text>
+                <Text style={styles.title}>Welcome to wasteFind App (Firebase/Firestore)</Text>
             </View>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sign Up')} >
                 <Text style={styles.buttonText}>Sign Up</Text>

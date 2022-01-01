@@ -5,8 +5,20 @@ import * as firebase from 'firebase/app';
 import { loggingOut } from '../API/firebaseMethods';
 import { getAuth } from 'firebase/auth';
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { LogBox } from 'react-native';
+import _ from 'lodash';
 
 export default function Dashboard({ navigation }) {
+    LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+    LogBox.ignoreAllLogs(); // ignore all logs
+    const _console = _.clone(console);
+    console.warn = message => {
+        if (message.indexOf('Setting a timer') <= -1) {
+            _console.warn(message);
+        }
+    };
+
+
 
     const auth = getAuth();
     let currentUserUID = auth.currentUser.uid;
@@ -19,6 +31,7 @@ export default function Dashboard({ navigation }) {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
+                Alert.alert("Successfully Signed In");
                 let dataObj = docSnap.data();
                 setFirstName(dataObj.firstName)
             } else {

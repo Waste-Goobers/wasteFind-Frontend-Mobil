@@ -14,7 +14,8 @@ export async function registration(email, password, lastName, firstName) {
         await setDoc(doc(db, "users", currentUser.uid), {
             email: currentUser.email,
             lastName: lastName,
-            firstName: firstName
+            firstName: firstName,
+            scanHistory: []
         });
 
     } catch (err) {
@@ -26,6 +27,9 @@ export async function signIn(email, password) {
     try {
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password);
+
+        // const currentUser = auth.currentUser;
+        // currentUser.getIdToken().then((token) => console.log(token));
     } catch (err) {
         Alert.alert("There is something wrong!", err.message);
     }
