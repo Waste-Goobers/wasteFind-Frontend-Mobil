@@ -14,8 +14,9 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  console.log('Connected with Firebase')
+
   initializeApp(apiKeys.firebaseConfig);
+  console.log('Connected with Firebase');
 
   return (
     <NavigationContainer>
