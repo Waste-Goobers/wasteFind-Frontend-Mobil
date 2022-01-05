@@ -41,7 +41,7 @@ export default function LoadingScreen({ navigation }) {
 
             });
             return () => { unmounted = true };
-        }
+        }, []
     );
 
     return (

@@ -3,6 +3,8 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
+import VideoInput from './VideoInput';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function WelcomeScreen({ navigation }) {
     LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
@@ -16,19 +18,25 @@ export default function WelcomeScreen({ navigation }) {
 
 
     return (
-        <ImageBackground
+        <ImageBackground resizeMode='contain'
             style={styles.background}
-            source={require('../assets/background.jpg')}>
+            source={require('../assets/logo-for-wasteFind.png')}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Welcome to wasteFind App (Firebase/Firestore)</Text>
+                <Text style={styles.title}>Welcome to wasteFind App (Firebase/Firestore) <FontAwesome name="trash" size={30} color="green" /></Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sign Up')} >
-                <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-            <Text style={styles.inlineText}>Already have an account?</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sign In')}>
-                <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableOpacity>
+            <View style={styles.functionalityButtonsContainer}>
+                {/* <VideoInput /> */}
+            </View>
+            <View style={styles.verificationButtonsContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sign Up')} >
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+                <Text style={styles.inlineText}>Already have an account?</Text>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sign In')}>
+                    <Text style={styles.buttonText}>Sign In</Text>
+                </TouchableOpacity>
+            </View>
+
         </ImageBackground>
     )
 }
@@ -37,8 +45,9 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'column',
+        backgroundColor: '#deb887'
     },
     button: {
         width: 200,
@@ -63,13 +72,28 @@ const styles = StyleSheet.create({
         marginTop: '5%',
     },
     title: {
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center'
+        color: '#fffafa',
+        textAlign: 'center',
     },
     titleContainer: {
-        position: 'absolute',
-        top: 170,
+        position: 'relative',
+        marginTop: 50
     },
+
+    verificationButtonsContainer: {
+        position: 'absolute',
+        bottom: 0,
+        alignItems: 'center'
+    },
+
+    functionalityButtonsContainer: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        position: 'relative'
+
+    }
 });

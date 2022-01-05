@@ -7,6 +7,7 @@ import { getAuth } from 'firebase/auth';
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { LogBox } from 'react-native';
 import _ from 'lodash';
+import VideoInput from './VideoInput';
 
 export default function Dashboard({ navigation }) {
     LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
@@ -49,10 +50,16 @@ export default function Dashboard({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>Dashboard</Text>
-            <Text style={styles.text}>Hi {firstName}</Text>
-            <TouchableOpacity style={styles.button} onPress={handlePress}>
-                <Text style={styles.buttonText}>Log Out</Text>
+            <Text style={styles.text}>Hello {firstName}</Text>
+            <TouchableOpacity >
+                <VideoInput />
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handlePress}>
+
+                <Text style={styles.buttonLogOutText}>Log Out</Text>
+
+            </TouchableOpacity>
+
         </View>
     )
 }
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignSelf: 'center',
     },
-    buttonText: {
+    buttonLogOutText: {
         fontSize: 20,
         color: 'white',
         fontWeight: 'bold',
@@ -77,18 +84,18 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: '#3FC5AB',
+        backgroundColor: '#bdb76b',
         alignItems: 'center',
         justifyContent: 'center',
     },
     text: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 30,
         fontStyle: 'italic',
         marginTop: '2%',
         marginBottom: '10%',
         fontWeight: 'bold',
-        color: 'black',
+        color: '#a52a2a',
     },
     titleText: {
         textAlign: 'center',
