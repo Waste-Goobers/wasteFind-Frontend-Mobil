@@ -5,7 +5,7 @@ import { signIn } from '../API/firebaseMethods';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
 
-export default function SignIn() {
+export default function SignIn({ navigation }) {
 
     LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
     LogBox.ignoreAllLogs(); // ignore all logs
@@ -20,7 +20,7 @@ export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handlePress = () => {
+    const handlePress = async () => {
         if (!email) {
             Alert.alert('Email field is required.');
         }
@@ -29,9 +29,10 @@ export default function SignIn() {
             Alert.alert('Password field is required.');
         }
 
-        signIn(email, password);
+        await signIn(email, password);
         setEmail('');
         setPassword('');
+        navigation.replace('Dashboard');
     };
 
     return (

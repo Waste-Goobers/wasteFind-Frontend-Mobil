@@ -5,7 +5,11 @@ import { Alert } from "react-native";
 export async function registration(email, password, lastName, firstName) {
     try {
         const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+            console.error(error);
+        });
+
+
         const currentUser = auth.currentUser;
 
         const db = getFirestore();
@@ -25,9 +29,10 @@ export async function registration(email, password, lastName, firstName) {
 
 export async function signIn(email, password) {
     try {
+
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password);
-
+        console.log('I am here now')
         // const currentUser = auth.currentUser;
         // currentUser.getIdToken().then((token) => console.log(token));
     } catch (err) {
