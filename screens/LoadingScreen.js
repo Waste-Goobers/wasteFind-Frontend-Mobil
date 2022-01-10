@@ -23,15 +23,16 @@ export default function LoadingScreen({ navigation }) {
         () => {
             let unmounted = false;
             const auth = getAuth();
-            onAuthStateChanged(auth, (user) => {
-                if (user !== null) {
+            const unsubscribe = onAuthStateChanged(auth, (user) => {
+                if (user) {
                     // setAuth(true);
 
                     user.getIdToken().then((token) => {
                         console.log('Here is your user access token(use this in communications between wasteFind backend and Frontend instead of using user.uid):\n' + token);
-                        if (!unmounted) {
-                            setAccessToken(token);
-                        }
+                        setAccessToken(token);
+                        // if (!unmounted) {
+                        //     setAccessToken(token);
+                        // }
                     });
                     navigation.replace('Dashboard');
 
@@ -40,7 +41,7 @@ export default function LoadingScreen({ navigation }) {
                 }
 
             });
-            return () => { unmounted = true };
+            return unsubscribe
         }, []
     );
 

@@ -31,7 +31,7 @@ export default function SignUp({ navigation }) {
         setConfirmPassword('');
     };
 
-    const handlePress = () => {
+    const handlePress = async () => {
         if (!firstName) {
             Alert.alert('First name is required');
         } else if (!email) {
@@ -43,8 +43,12 @@ export default function SignUp({ navigation }) {
             Alert.alert('Confirm password field is required.');
         } else if (password !== confirmPassword) {
             Alert.alert('Password does not match!');
-        } else {
-            registration(
+        }
+        else if (password.length < 6 || confirmPassword.length < 6) {
+            Alert.alert('Password length must be greater than 6!');
+        }
+        else {
+            await registration(
                 email,
                 password,
                 lastName,
@@ -52,6 +56,8 @@ export default function SignUp({ navigation }) {
             );
             navigation.navigate('Loading');
             emptyState();
+
+
         }
     };
 
