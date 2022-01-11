@@ -42,19 +42,23 @@ export default function Dashboard({ navigation }) {
         getUserInfo();
     })
 
-    const handlePress = () => {
+    const handleLogOutPress = () => {
         loggingOut();
         navigation.replace('Home');
     };
+
+    const handleVideoCamPress = () => {
+        navigation.replace('VideoInput');
+    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>Dashboard</Text>
             <Text style={styles.text}>Hello {firstName}</Text>
-            <TouchableOpacity >
-                <VideoInput />
+            <TouchableOpacity style={styles.buttonAnalyzeWaste} onPress={handleVideoCamPress}>
+                <Text style={styles.buttonAnalyzeWasteText}>Analyze Waste</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handlePress}>
+            <TouchableOpacity style={styles.button} onPress={handleLogOutPress}>
 
                 <Text style={styles.buttonLogOutText}>Log Out</Text>
 
@@ -67,6 +71,7 @@ export default function Dashboard({ navigation }) {
 
 const styles = StyleSheet.create({
     button: {
+        marginTop: 30,
         width: 150,
         padding: 5,
         backgroundColor: '#ff9999',
@@ -76,6 +81,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     buttonLogOutText: {
+        fontSize: 20,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    buttonOpenCamText: {
         fontSize: 20,
         color: 'white',
         fontWeight: 'bold',
@@ -103,4 +114,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#2E6194',
     },
+    buttonAnalyzeWaste: {
+        width: 200,
+        borderRadius: 15,
+        borderWidth: 3,
+        borderColor: '#e6e0cd',
+        backgroundColor: '#4ecdc4',
+        padding: 5,
+        marginTop: '50%'
+    },
+    buttonAnalyzeWasteText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    }
 });
