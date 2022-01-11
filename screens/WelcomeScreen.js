@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, View, Text } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, Image } from 'react-native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
@@ -22,6 +22,10 @@ export default function WelcomeScreen({ navigation }) {
         style={styles.background}
         source={require('../assets/wasteFind_logo.png')}
       >
+        <Image
+          style={styles.logoImage}
+          source={require('../assets/wastefind_searchicon.png')}
+        />
         <View style={styles.verificationButtonsContainer}>
           <TouchableOpacity
             style={styles.button}
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     width: 170,
     height: 50,
     justifyContent: 'center',
-    borderRadius: 45,
+    borderRadius: 40,
     borderColor: 'white',
     backgroundColor: '#01A263',
     padding: 5,
@@ -102,5 +106,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     position: 'relative',
+  },
+  logoImage: {
+    marginTop: -25,
+    height: 140,
+    width: 120,
   },
 });
