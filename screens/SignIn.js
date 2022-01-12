@@ -21,16 +21,14 @@ export default function SignIn({ navigation }) {
   const handlePress = async () => {
     if (!email) {
       Alert.alert('Email field is required.');
-    }
-
-    if (!password) {
+    } else if (!password) {
       Alert.alert('Password field is required.');
+    } else {
+      await signIn(email, password);
+      setEmail('');
+      setPassword('');
+      navigation.replace('Dashboard');
     }
-
-    await signIn(email, password);
-    setEmail('');
-    setPassword('');
-    navigation.replace('Dashboard');
   };
 
   return (

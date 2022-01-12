@@ -6,27 +6,37 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import { Camera } from 'expo-camera';
-import { Video } from 'expo-av';
-import axios from 'axios';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-export default function App() {
+export default function VideoInput({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const cameraRef = useRef();
+  const [accessToken, setAccessToken] = useState('dondurma');
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        user.getIdToken().then((token) => {
+          setAccessToken(token);
+        });
+      }
+    });
   }, []);
   const onCameraReady = () => {
     setIsCameraReady(true);
@@ -35,81 +45,46 @@ export default function App() {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      const source = data.uri;
+      const source = data.base64;
 
       if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
-        uploadFile(data);
-        console.log('picture source', source);
+        uploadFile(source);
       }
     }
   };
 
-  async function uploadFile(photo) {
-    const formData = new FormData();
-
-    formdata.append('file', {
-      uri: Platform.OS === 'android' ? photo.uri : 'file://' + photo.uri,
-      name: 'test',
-      mimetype: 'image/jpeg', // or your mime type what you want
-    });
-
-    axios
-      .post('http://192.168.1.41:3000/photo-upload', formData, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        return res.data;
-      });
-
-    /*data.append('file', {
-      uri: data.uri,
-      originalname: 'waste.jpg',
-      type: 'image/jpg',
-      fieldname: 'file',
-    });*/
-
-    /*let options = {
+  function uploadFile(base64) {
+    fetch('http://192.168.1.41:3000/waste/photo-upload-mobile', {
       method: 'POST',
-      body: formData,
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${accessToken}`,
       },
-    };*/
-    // let fileType = source.substring(source.lastIndexOf('.') + 1);
-    /*
-    formData.append('file', {
-      uri: 'file://var/mobile/Containers/Data/Application/A62329D8-E86E-4F81-9ADD-99A81428D3E6/Library/Caches/ExponentExperienceData/%2540anonymous%252FwasteFind-Frontend-Mobil-d28d1d49-92f4-429d-b7fd-2580b70f29a1/Camera/5B4B7AF9-8D8F-40DF-8438-576709725DF8.jpg',
-      name: 'photo.jpg',
-      type: 'jpg',
-    });*/
-
-    /*
-    const backendResponse = await axios.post(
-      'http://192.168.1.41:3000/photo-upload',
-      formData,
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-    */
-
-    // console.log(backendResponse);
+      body: JSON.stringify({
+        imgsource: base64,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.status);
+        else return response.json();
+      })
+      .then((data) => {
+        navigation.replace('Dashboard');
+        Alert.alert('Material: ' + data.material);
+      })
+      .catch((error) => {
+        console.log('error: ' + error);
+      });
   }
 
-  /* 
+  /** 
         const onPictureSaved = photo => {
             console.log(photo);
-        } */
+  } 
+  */
 
   const switchCamera = () => {
     if (isPreview) {
