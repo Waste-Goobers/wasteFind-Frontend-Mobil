@@ -1,0 +1,27 @@
+{
+  "cardboard": {
+    "key": "cardboard",
+    "title": "Karton",
+    "desc": "Geri dönüştürülen karton lifleri, geri dönüştürülmüş karton üretiminde kullanılır ancak karton sürekli olarak geri kazandırılamaz."
+  },
+  "paper": {
+    "key": "paper",
+    "title": "Kağıt",
+    "desc": "1 ton kağıdın geri dönüşümü ile 34 kişinin oksijen ihtiyacını sağlayan 17 yetişkin ağacın kesilmesi önlenmiş olur."
+  },
+  "metal": {
+    "key": "metal",
+    "title": "Metal",
+    "desc": "Evsel atıklardan ayrı olarak toplanan metal ambalaj atıkları ilk önce toplama ayırma tesislerinde malzemeye göre ayrılır."
+  },
+  "plastic": {
+    "key": "plastic",
+    "title": "Plastik",
+    "desc": "Plastik atıklar öncelikle cinslerine göre ayrılarak geri dönüşüm işlemine tabi tutulur. Cinslerine göre ayrılan geri dönüşebilir plastik atıklar, kırma makinelerinde kırılıp küçük parçalara ayrılır."
+  },
+  "glass": {
+    "key": "glass",
+    "title": "Cam",
+    "desc": "Kullandığımız her üç cam ambalajdan en az biri, geri kazanılan camdan yapılmıştır. Cam ambalaj üretiminde atık cam şişe ve kavanozlar kullanılır. Diğer cam çeşitleri, içerdikleri hammaddenin farklı olması nedeniyle bu işleme dâhil edilmez."
+  }
+}

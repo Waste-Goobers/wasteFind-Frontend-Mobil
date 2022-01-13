@@ -10,6 +10,7 @@ import SignIn from './screens/SignIn';
 import LoadingScreen from './screens/LoadingScreen';
 import Dashboard from './screens/Dashboard';
 import VideoInput from './screens/VideoInput';
+import Materialresult from './screens/Materialresult';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,11 @@ export default function App() {
         <Stack.Screen
           name={'VideoInput'}
           component={VideoInput}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={'Materialresult'}
+          component={Materialresult}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

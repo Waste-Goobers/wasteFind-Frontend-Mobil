@@ -56,7 +56,7 @@ export default function VideoInput({ navigation }) {
   };
 
   function uploadFile(base64) {
-    fetch('http://192.168.1.41:3000/waste/photo-upload-mobile', {
+    fetch('http://172.20.10.7:3000/waste/photo-upload-mobile', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -72,8 +72,10 @@ export default function VideoInput({ navigation }) {
         else return response.json();
       })
       .then((data) => {
-        navigation.replace('Dashboard');
-        Alert.alert('Material: ' + data.material);
+        navigation.navigate('Materialresult', {
+          material_type: data.material,
+        });
+        //Alert.alert('Material: ' + data.material);
       })
       .catch((error) => {
         console.log('error: ' + error);
