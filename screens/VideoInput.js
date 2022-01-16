@@ -6,10 +6,10 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { backendPhotoUpload } from '../API/backendCommunication';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
@@ -56,30 +56,7 @@ export default function VideoInput({ navigation }) {
   };
 
   function uploadFile(base64) {
-    fetch('http://172.20.10.7:3000/waste/photo-upload-mobile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        imgsource: base64,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(response.status);
-        else return response.json();
-      })
-      .then((data) => {
-        navigation.navigate('Materialresult', {
-          material_type: data.material,
-        });
-        //Alert.alert('Material: ' + data.material);
-      })
-      .catch((error) => {
-        console.log('error: ' + error);
-      });
+    backendPhotoUpload(base64, accessToken, navigation);
   }
 
   /** 

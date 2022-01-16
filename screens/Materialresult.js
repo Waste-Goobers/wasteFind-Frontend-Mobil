@@ -17,6 +17,7 @@ import {
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from 'axios';
+import { backendMappingLocation } from '../API/backendCommunication';
 
 export default function Materialresult({ navigation, route }) {
   LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
@@ -95,37 +96,12 @@ export default function Materialresult({ navigation, route }) {
     return 'material not found';
   };
 
-  const handleShowRC = async () => {
-    try {
-      const data = {
-        location: { lat: 39.9314346, lng: 32.8442926 },
-        type: material_type,
-      };
-
-      const response = await axios.post(
-        'http://172.20.10.7:3000/mapping/location',
-        data,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        Alert.alert(
-          'Nearest Recycling Center: ' +
-            response.data.recycle_centers.name +
-            '(' +
-            response.data.recycle_centers.district +
-            ')'
-        );
-      }
-    } catch (error) {
-      console.log('error: ' + error);
-    }
+  const handleShowRC = () => {
+    const data = {
+      location: { lat: 39.9314346, lng: 32.8442926 },
+      type: material_type,
+    };
+    backendMappingLocation(data, accessToken, navigation);
   };
 
   return (
