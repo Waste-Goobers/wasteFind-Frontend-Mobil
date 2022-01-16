@@ -6,7 +6,7 @@ import { LogBox } from 'react-native';
 import _ from 'lodash';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoadingScreen({ navigation }) {
+export default function LoadingScreen({ navigation, setToken, material_type }) {
   LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
   LogBox.ignoreAllLogs(); // ignore all logs
   const _console = _.clone(console);
@@ -32,6 +32,7 @@ export default function LoadingScreen({ navigation }) {
               token
           );
           setAccessToken(token);
+          setToken(token);
           // if (!unmounted) {
           //     setAccessToken(token);
           // }
