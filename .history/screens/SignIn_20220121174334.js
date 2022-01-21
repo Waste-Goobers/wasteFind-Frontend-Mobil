@@ -44,7 +44,6 @@ export default function SignIn({ navigation }) {
           style={styles.textInput}
           placeholder="Enter your email"
           value={email}
-          placeholderTextColor={'#ffe4c4'}
           onChangeText={(email) => setEmail(email)}
           autoCapitalize="none"
         />
@@ -52,7 +51,6 @@ export default function SignIn({ navigation }) {
           style={styles.textInput}
           placeholder="Enter your password"
           value={password}
-          placeholderTextColor={'#ffe4c4'}
           onChangeText={(password) => setPassword(password)}
           secureTextEntry={true}
         />
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     width: 300,
     fontSize: 18,
     borderRadius: 18,
-    color: '#e6e0cd',
+    color: '#fff',
     borderWidth: 1,
     backgroundColor: '#01A263',
     borderColor: '#e6e0cd',

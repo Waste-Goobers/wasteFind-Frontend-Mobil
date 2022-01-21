@@ -44,7 +44,6 @@ export default function SignIn({ navigation }) {
           style={styles.textInput}
           placeholder="Enter your email"
           value={email}
-          placeholderTextColor={'#ffe4c4'}
           onChangeText={(email) => setEmail(email)}
           autoCapitalize="none"
         />
@@ -52,7 +51,7 @@ export default function SignIn({ navigation }) {
           style={styles.textInput}
           placeholder="Enter your password"
           value={password}
-          placeholderTextColor={'#ffe4c4'}
+          placeholderTextColor={"#fff"}
           onChangeText={(password) => setPassword(password)}
           secureTextEntry={true}
         />
