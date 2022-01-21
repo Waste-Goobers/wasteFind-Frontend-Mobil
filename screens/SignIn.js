@@ -45,6 +45,7 @@ export default function SignIn({ navigation }) {
           placeholder="Enter your email"
           value={email}
           placeholderTextColor={'#ffe4c4'}
+          keyboardType='email-address'
           onChangeText={(email) => setEmail(email)}
           autoCapitalize="none"
         />

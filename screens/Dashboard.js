@@ -20,6 +20,7 @@ export default function Dashboard({ navigation }) {
   };
 
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [flag, setFlag] = useState(true);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function Dashboard({ navigation }) {
         //Alert.alert('Successfully Signed In');
         let dataObj = docSnap.data();
         setFirstName(dataObj.firstName);
+        setLastName(dataObj.lastName);
       } else {
         Alert.alert('No user data found!');
       }
@@ -60,7 +62,7 @@ export default function Dashboard({ navigation }) {
           <Avatar
             size={40}
             rounded
-            title={firstName.substring(0, 2)}
+            title={firstName.substring(0, 1) + lastName.substring(0, 1)}
             containerStyle={{ backgroundColor: '#444', marginLeft: 10 }}
           />
         </View>

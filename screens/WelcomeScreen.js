@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
 import { FontAwesome } from '@expo/vector-icons';
+import { FAB } from 'react-native-elements';
 
 export default function WelcomeScreen({ navigation }) {
   LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
@@ -27,6 +28,14 @@ export default function WelcomeScreen({ navigation }) {
           source={require('../assets/wastefind_searchicon.png')}
         />
         <View style={styles.verificationButtonsContainer}>
+          <View style={{ marginBottom: 15 }}>
+            <FAB
+              onPress={() => navigation.navigate('Mapping')}
+              title="Show In Maps"
+              upperCase
+              icon={{ name: 'place', color: 'white' }}
+            />
+          </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('Sign Up')}

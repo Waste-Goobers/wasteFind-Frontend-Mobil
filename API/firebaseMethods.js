@@ -32,7 +32,7 @@ export async function signIn(email, password) {
 
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password);
-        console.log('I am here now')
+        console.log('I am in function sign in now');
         // const currentUser = auth.currentUser;
         // currentUser.getIdToken().then((token) => console.log(token));
     } catch (err) {

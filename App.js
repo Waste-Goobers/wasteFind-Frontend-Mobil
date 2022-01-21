@@ -5,12 +5,14 @@ import * as firebase from 'firebase/app';
 import { initializeApp } from 'firebase/app';
 import apiKeys from './config/keys';
 import WelcomeScreen from './screens/WelcomeScreen';
+import Mapping from './screens/Mapping';
 import SignUp from './screens/SignUp';
 import SignIn from './screens/SignIn';
 import LoadingScreen from './screens/LoadingScreen';
 import Dashboard from './screens/Dashboard';
 import VideoInput from './screens/VideoInput';
 import Materialresult from './screens/Materialresult';
+
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,11 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={WelcomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Mapping"
+          component={Mapping}
           options={{ headerShown: false }}
         />
         <Stack.Screen
