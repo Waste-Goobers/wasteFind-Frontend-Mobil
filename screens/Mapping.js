@@ -1,11 +1,14 @@
 import { Dimensions, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import apiKeys from '../config/keys';
 import { Avatar } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView from 'react-native-maps';
 import { useFocusEffect } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 export default function Mapping({ navigation }) {
 
@@ -19,12 +22,38 @@ export default function Mapping({ navigation }) {
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
     const GOOGLE_MAPS_APIKEY = apiKeys.googleMapsConfig.apiKey;
 
-    const [coordinates, setCoordinates] = useState([{
-        latitude: 39.911580,
-        longitude: 32.829580
-    }]);
-    const [markers, setMarkers] = useState([{ title: 'first place', coordinates: { latitude: 37.3318456, longitude: -122.0296002 } }, { title: 'first place', coordinates: { latitude: 37.771707, longitude: -122.4053769 } }]);
-    const [mapView, setMapView] = useState(null);
+    const [, updateState] = useState();
+
+    const [region, setRegion] = useState({
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+    });
+
+    /*  const [coordinates, setCoordinates] = useState([{
+         latitude: 39.911580,
+         longitude: 32.829580
+     }]); */
+
+    // const [coordinates, setCoordinates] = useState({});
+    const activeCoordinatesRef = useRef({});
+    const markersRef = useRef([{
+        title: 'first place',
+        coordinates: {
+            latitude: 39.921583,
+            longitude: 32.830580
+        },
+    },
+    {
+        title: 'second place',
+        coordinates: {
+            latitude: 39.952912,
+            longitude: 32.738841
+        },
+    }])
+    // const [markers, setMarkers] = useState([{ title: 'first place', coordinates: { latitude: 37.3318456, longitude: -122.0296002 } }, { title: 'first place', coordinates: { latitude: 37.771707, longitude: -122.4053769 } }]);
+    const mapViewRef = useRef(null);
 
 
     //SAN FRANCISCO BAY AREA APPLE OFFICE TO AIRBNB OFFICE DON'T MIND
@@ -32,7 +61,7 @@ export default function Mapping({ navigation }) {
     const destination = { latitude: 37.771707, longitude: -122.4053769 };
 
     useEffect(() => {
-        setMarkers([{
+        /* setMarkers([{
             title: 'first place',
             coordinates: {
                 latitude: 39.921583,
@@ -46,9 +75,15 @@ export default function Mapping({ navigation }) {
                 longitude: 32.738841
             },
         }
-        ])
+        ]) */
         console.log('markers been set')
 
+    }, []);
+
+
+    const forceUpdate = useCallback(() => {
+        updateState({});
+        console.log('Map refreshed according to the newly added points');
     }, []);
 
     /* 
@@ -71,26 +106,27 @@ export default function Mapping({ navigation }) {
         }, []);
      */
     const onMapPress = async (e) => {
-        await setCoordinates((prevCoordinates) => {
-            return [...prevCoordinates, e.nativeEvent.coordinate];
-        })
+
+        activeCoordinatesRef.current = e.nativeEvent.coordinate;
+
         /*  await setMarkers((prevMarkers) => {
-             return [...prevMarkers, { title: 'Middle Place', coordinates: coordinates[coordinates.length - 1] }]
+             return [...prevMarkers, { title: 'Middle Place', coordinates: coordinates[0] }]
          }) */
-        /* // console.log(e.nativeEvent.coordinate);
-        console.log(coordinates);
-        console.log(markers); */
+
+        markersRef.current.push({ title: 'middle place', coordinates: activeCoordinatesRef.current });
+
+        await animateMap();
+        /* // console.log(e.nativeEvent.coordinate);*/
+        console.log(activeCoordinatesRef.current);
+        console.log(markersRef.current);
     }
 
-    const onReady = (result) => {
-        mapView.fitToCoordinates(result.coordinates, {
-            edgePadding: {
-                right: (width / 10),
-                bottom: (height / 10),
-                left: (width / 10),
-                top: (height / 10),
-            },
-        });
+    /* const onReady = () => {
+        mapViewRef.current.animateToRegion(region,1000);
+    } */
+
+    const animateMap = () => {
+        mapViewRef.current.animateToRegion(region, 1000);
     }
 
     const onError = (errorMessage) => {
@@ -128,38 +164,44 @@ export default function Mapping({ navigation }) {
                     />
                 </TouchableOpacity>
             </View>
-
-            <Text>Welcome To React Native Maps Page</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <Text style={{ alignSelf: 'center', fontWeight: 'bold', fontSize: 20, color: '#fff8dc' }}>
+                    Welcome To React Native Maps Page
+                </Text>
+                <MaterialCommunityIcons name="map-search" size={24} color="#fff8dc" />
+            </View>
             <SafeAreaView style={{ flex: 1, flexDirection: 'column', backgroundColor: '#376772' }}>
                 <View style={{ backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', flex: 0 }}>
-                    <Text>Hello</Text>
+                    <Text>Hello Dogukan</Text>
                 </View>
                 <View style={styles.mapContainer}>
-                    <MapView initialRegion={{
-                        latitude: LATITUDE,
-                        longitude: LONGITUDE,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                    }}
+                    <MapView
+                        initialRegion={region}
                         style={StyleSheet.absoluteFill}
-                        ref={c => setMapView(c)} // eslint-disable-line react/jsx-no-bind
-                        onPress={onMapPress}
+                        ref={mapViewRef} // eslint-disable-line react/jsx-no-bind
+                        onPress={(e) => {
+                            forceUpdate();
+                            onMapPress(e);
+                        }}
                     >
                         {/* <MapView.Marker coordinate={origin} />
                         <MapView.Marker coordinate={destination} /> */}
-                        {markers.map((marker, index) => (
-                            <MapView.Marker
+
+                        {markersRef.current.map((marker, index) => (
+                            < MapView.Marker
                                 key={`coordinate_${index}`}
                                 coordinate={marker.coordinates}
                                 title={marker.title}
                             />
                         ))}
+
+
                         {/*  To be carried to nearestRC Component */}
                         <MapViewDirections
-                            origin={markers[0].coordinates}
-                            destination={markers[1].coordinates}
+                            origin={markersRef.current[0].coordinates}
+                            destination={markersRef.current[1].coordinates}
                             // waypoints={markers[markers.length - 1].coordinates}
-                            onReady={onReady}
+                            onReady={animateMap}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
                             optimizeWaypoints={true}
