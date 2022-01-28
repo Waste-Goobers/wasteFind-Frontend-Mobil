@@ -16,7 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function Mapping({ navigation, route }) {
+export default function MappingZipcode({ navigation, route }) {
   let { width, height } = Dimensions.get('window');
   width = width / 2;
   height = height / 2;
@@ -38,65 +38,30 @@ export default function Mapping({ navigation, route }) {
 
   const activeCoordinatesRef = useRef({});
 
-  const { destination_cordinates } = route.params;
-  /**
- *@important  
-  navigation.navigate('Materialresult', {
-    material_type: data.material,
-  });
-  const { destination_cordinates } = route.params;
-*/
+  const { recycle_centers } = route.params;
+  const markersRef = useRef(recycle_centers);
 
-  const markersRef = useRef(destination_cordinates);
-
+  // const [markers, setMarkers] = useState([{ title: 'first place', coordinates: { latitude: 37.3318456, longitude: -122.0296002 } }, { title: 'first place', coordinates: { latitude: 37.771707, longitude: -122.4053769 } }]);
   const mapViewRef = useRef(null);
 
-  /*
   const forceUpdate = useCallback(() => {
     updateState({});
     console.log('Map refreshed according to the newly added points');
-  }, []);*/
-
-  // const onMapPress = async (e) => {
-
-  //     activeCoordinatesRef.current = e.nativeEvent.coordinate;
-
-  //     /*  await setMarkers((prevMarkers) => {
-  //          return [...prevMarkers, { title: 'Middle Place', coordinates: coordinates[0] }]
-  //      }) */
-
-  //     markersRef.current.push({ title: 'middle place', coordinates: activeCoordinatesRef.current });
-
-  //     await animateMap();
-  //     /* // console.log(e.nativeEvent.coordinate);*/
-  //     console.log(activeCoordinatesRef.current);
-  //     console.log(markersRef.current);
-  // }
+  }, []);
 
   const animateMap = () => {
-    mapViewRef.current.animateToRegion(
-      {
-        latitude: destination_cordinates[1].coordinates.latitude,
-        longitude: destination_cordinates[1].coordinates.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      3000
-    );
+    mapViewRef.current.animateToRegion(region, 1000);
   };
 
   const onError = (errorMessage) => {
     console.log(errorMessage); // eslint-disable-line no-console
   };
 
-  const handleLogOutPress = () => {
-    navigation.replace('Dashboard');
-  };
-
   const handleBack = () => {
-    navigation.navigate('Dashboard');
+    markersRef.current = [];
+    forceUpdate();
+    navigation.navigate('ZipcodeForm');
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
@@ -109,6 +74,7 @@ export default function Mapping({ navigation, route }) {
         />
         <TouchableOpacity style={styles.button}></TouchableOpacity>
       </View>
+
       <SafeAreaView
         style={{ flex: 1, flexDirection: 'column', backgroundColor: '#376772' }}
       >
@@ -123,24 +89,14 @@ export default function Mapping({ navigation, route }) {
 
             {markersRef.current.map((marker, index) => (
               <MapView.Marker
-                key={`coordinate_${index}`}
-                coordinate={marker.coordinates}
-                title={marker.title}
+                key={`coordinate_${marker.id}`}
+                coordinate={{
+                  latitude: marker.location.lat,
+                  longitude: marker.location.lng,
+                }}
+                title={marker.name + ' - ' + marker.district}
               />
             ))}
-
-            {/*  To be carried to nearestRC Component */}
-            <MapViewDirections
-              origin={markersRef.current[0].coordinates}
-              destination={markersRef.current[1].coordinates}
-              onReady={animateMap}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={5}
-              optimizeWaypoints={true}
-              strokeColor="rgba(1,162,99,0.6)"
-              resetOnChange={false}
-            />
-            {/*  To be carried to nearestRC Component */}
           </MapView>
         </View>
       </SafeAreaView>

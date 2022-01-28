@@ -3,7 +3,6 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
-import { FontAwesome } from '@expo/vector-icons';
 import { FAB } from 'react-native-elements';
 
 export default function WelcomeScreen({ navigation }) {
@@ -14,6 +13,10 @@ export default function WelcomeScreen({ navigation }) {
     if (message.indexOf('Setting a timer') <= -1) {
       _console.warn(message);
     }
+  };
+
+  const handleZipcodeMapping = () => {
+    navigation.replace('ZipcodeForm');
   };
 
   return (
@@ -28,14 +31,6 @@ export default function WelcomeScreen({ navigation }) {
           source={require('../assets/wastefind_searchicon.png')}
         />
         <View style={styles.verificationButtonsContainer}>
-          <View style={{ marginBottom: 15 }}>
-            <FAB
-              onPress={() => navigation.navigate('Mapping')}
-              title="Show In Maps"
-              upperCase
-              icon={{ name: 'place', color: 'white' }}
-            />
-          </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('Sign Up')}
@@ -49,6 +44,15 @@ export default function WelcomeScreen({ navigation }) {
           >
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
+
+          <View style={{ marginTop: 15 }}>
+            <FAB
+              color="#01A263"
+              onPress={() => handleZipcodeMapping()}
+              title="Show Recycle Centers"
+              icon={{ name: 'place', color: 'white' }}
+            />
+          </View>
         </View>
       </ImageBackground>
     </View>

@@ -6,13 +6,14 @@ import { initializeApp } from 'firebase/app';
 import apiKeys from './config/keys';
 import WelcomeScreen from './screens/WelcomeScreen';
 import Mapping from './screens/Mapping';
+import MappingZipcode from './screens/MappingZipcode';
 import SignUp from './screens/SignUp';
 import SignIn from './screens/SignIn';
 import LoadingScreen from './screens/LoadingScreen';
 import Dashboard from './screens/Dashboard';
 import VideoInput from './screens/VideoInput';
 import Materialresult from './screens/Materialresult';
-
+import ZipcodeForm from './screens/ZipcodeForm';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,16 @@ export default function App() {
         <Stack.Screen
           name="Mapping"
           component={Mapping}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ZipcodeForm"
+          component={ZipcodeForm}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MappingZipcode"
+          component={MappingZipcode}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -63,17 +63,74 @@ export async function backendMappingLocation(data, accessToken, navigation) {
       },
     });
 
-    //TODO: response will go to google maps component
     if (response.status === 200) {
       Alert.alert(
         'Nearest Recycling Center: ' +
-        response.data.recycle_centers.name +
-        '(' +
-        response.data.recycle_centers.district +
-        ')'
+          response.data.recycle_centers.name +
+          '(' +
+          response.data.recycle_centers.district +
+          ')' +
+          ' Route has been calculated 🥳'
       );
+      const dest_route = [
+        {
+          title: 'Gazi University',
+          coordinates: {
+            latitude: 39.9314346,
+            longitude: 32.8442926,
+          },
+        },
+        {
+          title: response.data.recycle_centers.name,
+          coordinates: {
+            latitude: response.data.recycle_centers.location.lat,
+            longitude: response.data.recycle_centers.location.lng,
+          },
+        },
+      ];
+      navigation.navigate('Mapping', {
+        destination_cordinates: dest_route,
+      });
     }
   } catch (error) {
     console.log('error: ' + error);
   }
 }
+
+export async function backendMappingZipcodeLocation(data, navigation) {
+  try {
+    const response = await axios.post(`${baseUrl}/mapping/zipcode`, data, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status === 200) {
+      Alert.alert('Nearest Recycling Centers by Zipcode Calculated 🥳');
+
+      navigation.navigate('MappingZipcode', {
+        recycle_centers: response.data.recycle_centers,
+      });
+    }
+  } catch (error) {
+    console.log('error: ' + error);
+  }
+}
+
+const destination_cordinates = [
+  {
+    title: 'first place',
+    coordinates: {
+      latitude: 39.921583,
+      longitude: 32.83058,
+    },
+  },
+  {
+    title: 'second place',
+    coordinates: {
+      latitude: 39.952912,
+      longitude: 32.738841,
+    },
+  },
+];
