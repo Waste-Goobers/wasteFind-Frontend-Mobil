@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
  * @dev     local IP changes change IP
  * @prod    production code set api url
  */
-export const baseUrl = 'http://192.168.1.41:3000';
+export const baseUrl = 'http://172.20.10.7:3000';
 
 /**
  * API Calls
